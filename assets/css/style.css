@@ -920,6 +920,7 @@ section {
   align-items: center;
   gap: 40px;
   padding-bottom: 100px;
+  width: 100%;
 }
 .c-accordion input[type=checkbox] {
   display: none;
@@ -945,6 +946,7 @@ section {
   opacity: 0;
   overflow: hidden;
   transition: 0.3s;
+  width: 100%;
 }
 
 .u-width {
