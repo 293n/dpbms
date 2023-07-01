@@ -207,5 +207,5 @@ async function SQL_load(db_file){
 
     new_clears_update();
     rerender_table(grid, songsTable);
-    location.href = ''; 
+    location.href = '#level'; 
 }
