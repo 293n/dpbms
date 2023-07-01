@@ -1,3 +1,14 @@
+const clipboard_copy = text =>{
+    if( !navigator.clipboard ) {
+        alert("クリップボードにコピーできませんでした");return false;
+    }
+    navigator.clipboard.writeText(text).then(
+        ()=>alert("クリップボードにコピーしました"),
+        ()=>alert("クリップボードにコピーできませんでした")
+    );
+    return true;
+};
+
 
 function calculate_probability(theta, phi, a, D=1.71){
     let z = D * a * (theta - phi);
