@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPBMS推定難易度表</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+    <!-- JavaScript libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script
+    src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+    integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0="
+    crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.4/chartist.min.js" integrity="sha512-9rxMbTkN9JcgG5euudGbdIbhFZ7KGyAuVomdQDI9qXfPply9BJh0iqA7E/moLCatH2JD4xBGHwV6ezBkCpnjRQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.4/chartist.min.css" integrity="sha512-V0+DPzYyLzIiMiWCg3nNdY+NyIiK9bED/T1xNBj08CaIUyK3sXRpB26OUCIzujMevxY9TRJFHQIxTwgzb0jVLg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js" integrity="sha512-n7swEtVCvXpQ7KxgpPyp0+DQQEf5vPpmzCRl14x2sp2v5LpCYCjrAx03mkBAbWwGF9eUoIk8YVcDFuJRIeYttg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script type="module">
+        import {
+            Grid,
+            html,
+            h,
+            createRef as gCreateRef
+        } from "https://unpkg.com/gridjs?module";
+
+        let imp = [];
+        window.Grid = Grid;
+        window.html = html;
+        window.h = h;
+        window.gCreateRef = gCreateRef;
+
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    
+    <!-- Common JavaScript -->
+    <script src="./assets/js/global.js"></script>
+    <script src="./assets/js/functions.js"></script>
+    <script src="./assets/js/sql.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agdasima&family=Fjalla+One&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body style="--clear-level: 200%; --score-level: 200%;">
+    <article class="u-width">
+        <section id="top">
+            <h1>DPBMS推定難易度表</h1>
+            <p>
+                <a href="http://dpbmsdelta.web.fc2.com/table/insane.html" target="_blank">発狂DP難易度表</a>、
+                <a href="http://ereter.net/dpoverjoy/" target="_blank">DP Overjoy</a>、
+                <a href="https://stellabms.xyz/dp/table.html" target="blank">DP Satellite</a>
+                を統合した推定難易度表です。<br />
+                
+            </p>
+            <h2>諸注意</h2>
+            <ul>
+                <li>推定難易度は項目反応理論(IRT)を用いてLR2IRのデータから計算されています。</li>
+                <li>最小値が0、最大値が100になるようにスケーリングしています。</li>
+                <li>クリア系(Easy・Hard)とスコア系(AAA)の値がありますが、それぞれ独立した計算結果です。</li>
+                <li><b>プレイ人数が少ない譜面では推定が不正確なことがあります。</b></li>
+            </ul>
+        </section>
+        <div class="c-accordion">
+            <input type="checkbox" name="loading" id="loading">
+            <label for="loading" class="c-accordion--btn c-btn--red"><span></span></label>
+            <div class="c-accordion--wrapper">
+                <section id="load-score">
+                    <h2>LR2 / beatoraja / LR2orajaのプレイデータ(.db)を読み込む</h2>
+                    <input type="file" name="score_db" id="score_db" accept=".db">
+                    <p>
+                        プレイデータを読み込み、プレイヤーレベルを推定することができます。<br />
+                        <dl>
+                            <dt>LR2: </dt>
+                            <dd>/LR2files/Database/Score/[name].db</dd>
+                            <dt>beatoraja / LR2oraja: </dt>
+                            <dd>/player/player[number]/score.db</dd>
+                        </dl>
+                        <small>
+                            LR2IRから計算したデータなのでどちらかと言えばLR2、LR2oraja向けの機能です。<br />
+                            ゲージ仕様が異なるbeatorajaは参考程度ということでお願いします。<br />
+                            ここで読み込んだ結果は推定難易度表の値にフィードバックされません。<br />
+                            読み込まれたデータはブラウザのlocalStorageに保存されます。
+                        </small>
+                    </p>
+                </section>
+                <section id="level">
+                    <h2 class="c-heading">YOUR ABILITIES</h2>
+                    <div class="l-level__container">
+                        <div class="l-level__wrapper" id="clear-level-wrapper">
+                            <h2 class="l-level__subject">CLEAR ABILITY</h2>
+                            <strong class="l-level__content" id="clear-level">0.000</strong>
+                        </div>
+                        <div class="l-level__wrapper" id="score-level-wrapper">
+                            <h2 class="l-level__subject">SCORE ABILITY</h2>
+                            <strong class="l-level__content" id="score-level">0.000</strong>
+                        </div>
+                    </div>
+                </section>
+                <section id="new-clear">
+                    <h2 class="c-heading">NEW CLEARS</h2>
+                    <div class="l-new-clear"></div>
+                </section>
+                <label for="loading" class="c-accordion--btn c-btn--red"><span></span></label>
+            </div>
+        </div>
+        <section id="table">
+            <h2 class="c-heading">DIFFICULTY TABLE</h2>
+            <div class="p-table-option">
+                <div class="c-heading">FILTERING OPTION</div>
+                <div class="p-table-option--container">
+                    <div class="p-table-option--wrapper">
+                        <div class="p-table-option--check">
+                            <div class="p-table-option--lamp">
+                                <label for="lamp-easy">
+                                    <input type="checkbox" name="lamp-easy" id="lamp-easy" checked data-save>
+                                    <span>Easy</span>
+                                </label>
+                                <label for="lamp-hard">
+                                    <input type="checkbox" name="lamp-hard" id="lamp-hard" checked data-save>
+                                    <span>Hard</span>
+                                </label>
+                                <label for="lamp-aaa">
+                                    <input type="checkbox" name="lamp-aaa" id="lamp-aaa" checked data-save>
+                                    <span>AAA</span>
+                                </label>
+                                <label for="lamp-failed">
+                                    <input type="checkbox" name="lamp-failed" id="lamp-failed" checked data-save>
+                                    <span>Failed</span>
+                                </label>
+                                <label for="lamp-noplay">
+                                    <input type="checkbox" name="lamp-noplay" id="lamp-noplay" checked data-save>
+                                    <span>No play</span>
+                                </label>
+                            </div>
+                            <div class="p-table-option--level--container"></div>
+                        </div>
+                        <div class="p-table-option--range--container">
+                            <div class="p-table-option--range--wrapper" id="easy-recommend">
+                                <input type="text" id="easy-recommend-range" name="easy-recommend-range">
+                            </div>
+                            <div class="p-table-option--range--wrapper" id="hard-recommend">
+                                <input type="text" id="hard-recommend-range" name="hard-recommend-range">
+                            </div>
+                            <div class="p-table-option--range--wrapper" id="aaa-recommend">
+                                <input type="text" id="aaa-recommend-range" name="aaa-recommend-range">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-table-option--btn">
+                        <input class="c-btn--skyblue" type="button" value="Filter the table" id="table-rerender">
+                    </div>
+                </div>
+            </div>
+            <section class="p-table" id="grid-table"></section>
+        </section>
+        <small id="last-update"></small>
+        <section id="bingo">
+            <h2 class="c-heading">BINGO</h2>
+            <div class="l-bingo" id="listWithHandle">
+                <div class="l-bingo__wrapper" tabindex="1" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="2" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="3" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="4" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="5" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="6" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="7" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="8" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="9" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="10" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="11" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="12" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="13" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="14" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="15" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="16" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="17" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="18" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="19" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="20" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="21" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="22" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="23" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="24" draggable="true"></div>
+                <div class="l-bingo__wrapper" tabindex="25" draggable="true"></div>
+            </div>
+            <div class="l-btn">
+                <div class="l-bingo__btn--shuffle c-btn--purple">Shuffle</div>
+                <div class="l-bingo__btn--clear c-btn--red">Clear all</div>
+                <div class="l-bingo__btn--backup c-btn--yellow">Back up</div>
+                <label for="bingo-upload" class="l-bingo__btn--upload c-btn--skyblue">Restore</label>
+                <div class="l-bingo__btn--table c-btn--yellow">Custom folder<small>for oraja</small></div>
+            </div>
+            <input type="file" name="bingo-upload" id="bingo-upload" class=".l-bingo--uploader" accept=".json" hidden>
+        </section>
+    </article>
+</body>
+</html>

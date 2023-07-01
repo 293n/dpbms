@@ -1,0 +1,13 @@
+//foundation
+@use "config/_reset.scss";
+@use "config/_variable.scss" as v;
+@use "function/_mixin.scss" as m;
+@use "function/_function.scss" as f;
+
+//flocss
+@use "layout/_layout.scss";
+@use "object/_project.scss";
+@use "object/_component.scss";
+@use "object/_utility.scss";
+@use "object/_external.scss";
+@use "js/_js.scss";

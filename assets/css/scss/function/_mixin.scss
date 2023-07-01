@@ -1,0 +1,95 @@
+@use "../function/_function.scss" as f;
+@use "../config/_variable.scss" as v;
+
+//Font Awesome
+@mixin fas($let){
+    content: $let;
+    font-family: 'Font Awesome 5 Free';
+    @include w-bold;
+}
+@mixin far($let){
+    content: $let;
+    font-family: 'Font Awesome 5 Free';
+    @include w-regular;
+}
+
+
+// media query
+@mixin mq($bp) {
+    @media #{map-get(v.$breakpoint, $bp)} {
+        @content;
+    }
+}
+
+//flex-centering
+@mixin center(){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+//font-size
+@mixin font($size: 18, $bold: 400, $height: 200%, $spacing: 0){
+    font-size: f.px($size);
+    font-weight: $bold;
+    line-height: $height;
+    letter-spacing: f.px($spacing);
+}
+
+//size
+@mixin size($width, $height){
+    @if $width == 'max' {
+        width: 100%;
+    }
+    @else if $width == 0 or $width == 'unset' {
+        width: unset;
+    }
+    @else{
+        width: f.px($width);
+    }
+    @if $height == 'max' {
+        height: 100%;
+    }
+    @else if $height == 0 or $height == 'unset' {
+        height: unset;
+    }
+    @else{
+        height: f.px($height);
+    }
+}
+
+//absolute
+@mixin abs($top: unset, $left: unset, $right: unset, $bottom: unset){
+    position: absolute;
+    display: block;
+
+    @if $top == 'unset' {
+        top: unset;
+    }
+    @else{
+        top: f.px($top);
+    }
+    @if $left == 'unset' {
+        left: unset;
+    }
+    @else{
+        left: f.px($left);
+    }
+    @if $right == 'unset' {
+        right: unset;
+    }
+    @else{
+        right: f.px($right);
+    }
+    @if $bottom == 'unset' {
+        bottom: unset;
+    }
+    @else{
+        bottom: f.px($bottom);
+    }
+}
+
+@mixin pos($width: unset, $height: unset, $top: unset, $left: unset, $right: unset, $bottom: unset){
+    @include abs($top, $left, $right, $bottom);
+    @include size($width, $height);
+}

@@ -1,0 +1,141 @@
+@use "../config/_variable.scss" as v;
+@use "../function/_mixin.scss" as m;
+@use "../function/_function.scss" as f;
+
+.c-table{
+    &--center{
+        text-align: center;
+    }
+    &--num{
+        color: hsl(var(--value), 100%, 50%);
+        transition: 0.3s;
+    }
+    &--invisible{
+        display: none;
+    }
+    &--title{
+        span{
+            display: flex;
+            flex-direction: column;
+            font-weight: 600;
+            small{
+                font-size: 10px;
+                color: gray;
+                font-weight: 400;
+                line-height: 14px;
+            }
+        }
+    }
+    &--links{
+        position: absolute;
+        bottom: 2px;
+        right: 5px;
+        font-size: 10px;
+        font-family: 'arial';
+        color: #a08080;
+        line-height: 100%;
+        font-weight: 400;
+        transform: scale(0.8);
+        transform-origin: right bottom;
+        transition: 0.3s;
+        opacity: 0;
+    }
+}
+
+.c-heading{
+    font-family: 'Fjalla One', sans-serif;
+    text-align: center;
+    font-size: 36px;
+    color: #408040;
+    margin-bottom: 50px;
+}
+
+.c-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: f.px(5);
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    transition: 0.3s;
+    font-weight: 700;
+    background-color: white;
+    border: 2px solid var(--color);
+    color: var(--color);
+    font-size: 16px;
+    padding-bottom: 4px;
+    small{
+        font-size: f.px(10);
+        line-height: f.px(14);
+    }
+    &:hover{
+        background-color: var(--color);
+        color: white;
+    }
+    &--red{
+        @extend .c-btn;
+        --color: #aa2222;
+    }
+    &--yellow{
+        @extend .c-btn;
+        --color: #aa8822;
+    }
+    &--purple{
+        @extend .c-btn;
+        --color: #aa2288;
+    }
+    &--skyblue{
+        @extend .c-btn;
+        --color: #44aaaa;
+    }
+}
+
+.c-accordion{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding-bottom: 100px;
+    input[type='checkbox']{
+        display: none;
+        &:checked{
+            & ~ .c-accordion{
+                &--btn{
+                    span{
+                        &::before{
+                            content: 'Close';                            
+                        }
+                    }
+                }
+                &--wrapper{
+                    max-height: 100%;
+                    opacity: 1;
+                    .c-accordion--btn{
+                        span{
+                            &::before{
+                                content: 'Close';                            
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &--btn{
+        margin: auto;
+        span{
+            &::before{
+                content: 'Load DB File';
+            }
+        }
+    }
+    &--wrapper{
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+}

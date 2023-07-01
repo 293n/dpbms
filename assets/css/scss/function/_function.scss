@@ -1,0 +1,26 @@
+
+@use "../config/_variable.scss" as v;
+
+@function px($px){
+    @if($px=='M'){
+        @return 100%;
+    }@else if($px=='h'){
+        @return 50%;
+    }@else if($px=='m'){
+        @return 0;
+    }@else if($px=='n'){
+        @return unset;
+    }@else if($px=='W'){
+        @return 100vw;
+    }@else if($px=='H'){
+        @return 100vh;
+    }@else if($px=='a'){
+        @return auto;
+    }@else{
+        @return $px / v.$base-1rem * 1rem;
+    }
+}
+
+@function vw($px){
+    @return calc($px / v.$vw * 100vw);
+}

@@ -1,0 +1,31 @@
+
+// general config
+$jp-font: 'Noto Sans JP', "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", sans-serif;
+$breakpoint: (
+    sp: 'screen and (max-width: 767px)',
+    pc: 'screen and (min-width: 768px)'
+);
+
+// color
+$black: #171717;
+$light-black: #333333;
+$gray: #707070;
+$mid-gray: #AFAFAF;
+$light-gray: #F4F4F4;
+$dark-brown: #4A3C2D;
+$beige: #F0EEEA;
+$dark-red: #860000;
+$blue: #629EB9;
+
+// floating rem.
+$base-1rem: 100;
+$max-1rem: 100px;
+$base-100vw-sp: 375;
+$base-100vw-pc: 1456;
+
+//viewport to px
+$vw: 1440;
+
+// selection color
+$selection-bg: $gray;
+$selection-font: white;

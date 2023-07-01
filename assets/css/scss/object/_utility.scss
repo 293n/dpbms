@@ -1,0 +1,32 @@
+@use "../config/_variable.scss" as v;
+@use "../function/_mixin.scss" as m;
+@use "../function/_function.scss" as f;
+
+.u-width{
+    box-sizing: border-box;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    @include m.mq(pc){
+        width: 1080px;
+        padding-left: unset;
+        padding-right: unset;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.sp-only{
+    @include m.mq(sp){
+    }
+    @include m.mq(pc){
+        display: none !important;
+    }
+}
+.pc-only{
+    @include m.mq(sp){
+        display: none !important;
+    }
+    @include m.mq(pc){
+    }
+}
