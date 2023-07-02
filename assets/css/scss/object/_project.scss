@@ -3,6 +3,77 @@
 @use "../function/_mixin.scss" as m;
 @use "../function/_function.scss" as f;
 
+.p-header{
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    &--nav{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-top: 50px;
+        a{
+            position: relative;
+            display: block;
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            background-color: #555;
+            box-shadow: 0 0 10px rgba(black, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: 30px 30px;
+            background-repeat: no-repeat;
+            &[href="#top"]{
+                background-image: url('../img/icon_chevron.png');
+            }
+            &[href="#load"]{
+                background-image: url('../img/icon_load.png');
+            }
+            &[href="#table"]{
+                background-image: url('../img/icon_table.png');
+            }
+            &[href="#bingo"]{
+                background-image: url('../img/icon_bingo.png');
+            }
+            &:hover{
+                opacity: 1;
+                box-shadow: 0 0 100px rgba(black, 0.5);
+                span{
+                    left: 0;
+                    transform: translate(calc(-100% - 10px), -50%);
+                    opacity: 1;
+                }
+            }
+            span{
+                position: absolute;
+                z-index: -1;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-family: var(--font);
+                background-color: #555;
+                font-size: 14px;
+                line-height: 16px;
+                padding: 3px;
+                border-radius: 3px;
+                transition: 0.3s;
+                opacity: 0;
+                max-width: unset;
+                width: fit-content;
+                white-space: nowrap;
+            }
+        }
+    }
+}
+
 .p-chart{
     position: relative;
     overflow: hidden;
