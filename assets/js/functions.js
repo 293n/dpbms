@@ -115,7 +115,6 @@ function extract_new_clear(sha256, old_array, new_array){
             let new_clear;
             try{
                 new_clear = JSON.parse(localStorage.getItem('newClears'));
-                console.log(new_clear);
                 new_clear = Object.assign(new_clear, new_line);
                 localStorage.setItem('newClears', JSON.stringify(new_clear));
             }catch(err){
@@ -201,7 +200,6 @@ function bingo_update(bingo_list){
 }
 
 function storeJsonToStorage(key, data, upper_bound=Infinity){
-    console.log(upper_bound);
     try{
         let array = JSON.parse(localStorage.getItem(key));
         if(Object.keys(array).length < upper_bound){
@@ -344,21 +342,39 @@ function songs_table_filter(table, option){
     let output_table;
     if(option['level'].length){
         output_table = songs_table_filter_level(table, option['level'])
+    }else{
+        alert('レベルを選択してください。');
+        return table;
     }
-    if(option['clear'].easy == false){
-        output_table = songs_table_filter_clear(output_table, 0);
+    //easy
+    if(option['clear'].easy == 0){
+        output_table = songs_table_filter_clear(output_table, 0, 0);
+    }else if(option['clear'].easy == 2){
+        output_table = songs_table_filter_clear(output_table, 0, 1);
     }
-    if(option['clear'].hard == false){
-        output_table = songs_table_filter_clear(output_table, 1);
+    //hard
+    if(option['clear'].hard == 0){
+        output_table = songs_table_filter_clear(output_table, 1, 0);
+    }else if(option['clear'].hard == 2){
+        output_table = songs_table_filter_clear(output_table, 1, 1);
     }
-    if(option['clear'].aaa == false){
-        output_table = songs_table_filter_clear(output_table, 2);
+    //aaa
+    if(option['clear'].aaa == 0){
+        output_table = songs_table_filter_clear(output_table, 2, 0);
+    }else if(option['clear'].aaa == 2){
+        output_table = songs_table_filter_clear(output_table, 2, 1);
     }
-    if(option['clear'].failed == false){
-        output_table = songs_table_filter_failed(output_table);
+    //failed
+    if(option['clear'].failed == 0){
+        output_table = songs_table_filter_failed(output_table, 0);
+    }else if(option['clear'].failed == 2){
+        output_table = songs_table_filter_failed(output_table, 1);
     }
-    if(option['clear'].noplay == false){
-        output_table = songs_table_filter_noplay(output_table);
+    //noplay
+    if(option['clear'].noplay == 0){
+        output_table = songs_table_filter_noplay(output_table, 0);
+    }else if(option['clear'].noplay == 2){
+        output_table = songs_table_filter_noplay(output_table, 1);
     }
     if(!(option['recommend'].easy[0] == 0 && option['recommend'].easy[1] == 100)){
         output_table = songs_table_filter_recommend(output_table, 0, option['recommend'].easy);
@@ -369,7 +385,6 @@ function songs_table_filter(table, option){
     if(!(option['recommend'].aaa[0] == 0 && option['recommend'].aaa[1] == 100)){
         output_table = songs_table_filter_recommend(output_table, 2, option['recommend'].aaa);
     }
-    console.log(songs_table_filter.length);
     return output_table;
 }
 
@@ -380,13 +395,14 @@ function songs_table_filter_level(table, option){
     });
     return output_table;
 }
-
-function songs_table_filter_clear(table, clear){ //clear: 0 easy 1 hard 2 aaa
+//clear: 0 easy 1 hard 2 aaa
+//filter: 0 not
+function songs_table_filter_clear(table, clear, filter){ 
     return table.filter((row)=>{
         try{
             if(row[14] != null){
                 let stats = row[14].split(',');
-                return stats[clear] == '0';
+                return parseInt(stats[clear]) == filter;
             }else{
                 return 1;
             }
@@ -398,11 +414,13 @@ function songs_table_filter_clear(table, clear){ //clear: 0 easy 1 hard 2 aaa
 
 
 //failed
-function songs_table_filter_failed(table){
+function songs_table_filter_failed(table, filter){
     return table.filter((row)=>{
         try{
             if(row[14] != null){
-                return row[14][0] == 1;
+                let clear = (parseInt(row[14][0]) == 1 ? 1 : 0);
+                return clear != filter;
+                //return (row[14][0] >= !filter);
             }else{
                 return 1;
             }
@@ -413,13 +431,13 @@ function songs_table_filter_failed(table){
 }
 
 //noplay
-function songs_table_filter_noplay(table){
+function songs_table_filter_noplay(table, filter){
     return table.filter((row)=>{
         try{
             if(row[14] == null){
-                return 0;
+                return 0 != filter;
             }else{
-                return 1;
+                return 0 == filter;
             }
         }catch{
             return 1;

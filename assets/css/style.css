@@ -211,7 +211,15 @@ section {
 #top a {
   text-decoration: underline;
 }
-#top ul {
+#top .c-note {
+  margin-bottom: 50px;
+  --color: 256, 192, 32;
+}
+#top .c-note dl dt {
+  color: #aa8822;
+  letter-spacing: 0.1em;
+}
+#top .c-note dl ul {
   text-align: left;
   width: fit-content;
   margin: auto;
@@ -221,8 +229,7 @@ section {
 #top b {
   font-weight: 700;
 }
-#top dl {
-  padding-top: 50px;
+#top .l-link {
   width: 500px;
   margin: auto;
   display: flex;
@@ -230,11 +237,11 @@ section {
   justify-content: center;
   gap: 10px;
 }
-#top dl dt {
+#top .l-link dt {
   width: 80px;
   text-align: right;
 }
-#top dl dd {
+#top .l-link dd {
   flex-grow: 1;
   text-align: left;
 }
@@ -281,6 +288,9 @@ section {
 }
 #load-score dl dd {
   width: 55%;
+}
+#load-score .c-btn--skyblue {
+  margin: 50px auto 0;
 }
 
 #level {
@@ -555,6 +565,10 @@ section {
   padding-bottom: 100px;
   text-align: center;
 }
+#bingo .c-note {
+  --color: 64, 192, 192;
+  margin-bottom: 50px;
+}
 #bingo .l-bingo {
   position: relative;
   display: flex;
@@ -758,25 +772,9 @@ section {
   display: none;
 }
 .p-table-option--check input[type=checkbox]:checked ~ span {
+  background-color: #44aaaa;
   color: white;
-  background-color: #66cccc;
   opacity: 1;
-}
-.p-table-option--check input[type=checkbox]:checked[id=lamp-easy] ~ span {
-  background-color: var(--easy-color);
-}
-.p-table-option--check input[type=checkbox]:checked[id=lamp-hard] ~ span {
-  background-color: var(--hard-color);
-}
-.p-table-option--check input[type=checkbox]:checked[id=lamp-aaa] ~ span {
-  background-color: var(--aaa-color);
-}
-.p-table-option--check input[type=checkbox]:checked[id=lamp-failed] ~ span {
-  background-color: var(--failed-color);
-}
-.p-table-option--check input[type=checkbox]:checked[id=lamp-noplay] ~ span {
-  background-color: #f0f0f0;
-  color: black;
 }
 .p-table-option--check span {
   display: flex;
@@ -803,6 +801,33 @@ section {
 }
 .p-table-option--lamp label span {
   width: 65px;
+}
+.p-table-option--lamp input[type=value] {
+  display: none;
+}
+.p-table-option--lamp input[type=value][data-value="0"] ~ span {
+  text-decoration: line-through;
+  color: #884444;
+}
+.p-table-option--lamp input[type=value][data-value="2"] ~ span {
+  opacity: 1;
+  color: white;
+}
+.p-table-option--lamp input[type=value][data-value="2"][id=lamp-easy] ~ span {
+  background-color: var(--easy-color);
+}
+.p-table-option--lamp input[type=value][data-value="2"][id=lamp-hard] ~ span {
+  background-color: var(--hard-color);
+}
+.p-table-option--lamp input[type=value][data-value="2"][id=lamp-aaa] ~ span {
+  background-color: var(--aaa-color);
+}
+.p-table-option--lamp input[type=value][data-value="2"][id=lamp-failed] ~ span {
+  background-color: var(--failed-color);
+}
+.p-table-option--lamp input[type=value][data-value="2"][id=lamp-noplay] ~ span {
+  background-color: #f0f0f0;
+  color: black;
 }
 .p-table-option--level--container {
   display: flex;
@@ -964,6 +989,44 @@ section {
   overflow: hidden;
   transition: 0.3s;
   width: 100%;
+}
+
+.c-note {
+  position: relative;
+  padding: 20px 40px;
+  --color: 128, 128, 128;
+  background-color: rgba(var(--color), 0.2);
+  border-radius: 5px;
+  width: fit-content;
+  overflow: hidden;
+  margin: auto;
+  color: #555;
+}
+.c-note::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  background-color: rgba(var(--color), 1);
+}
+.c-note dl {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-align: left;
+}
+.c-note dl dt {
+  color: rgba(var(--color), 1);
+  font-size: 18px;
+}
+.c-note dl dd {
+  flex-grow: 1;
+}
+.c-note dl ul {
+  list-style: disc;
+  padding-left: 20px;
 }
 
 .u-width {

@@ -109,7 +109,6 @@ $(()=>{
         grid = new window.Grid(gridOption).render(document.getElementById('grid-table'));
         //ビンゴ追加
         grid.on('cellClick', (e, cell, cell_option, row)=>{
-            console.log(this);
             if(e.shiftKey){
                 let song_info = {};
                 let id = cell.id;
@@ -128,7 +127,6 @@ $(()=>{
                     song_info[id]['value'] = Number(row._cells[7].data).toFixed(3);
                     song_info[id]['recommend'] = Number(row.cells[13].data).toFixed(13);
                 }
-                console.log(song_info[id]['value']);
                 if(song_info[id]['value'] != null){
                     storeJsonToStorage('bingoList', song_info, 25);
                     let bingo_list = JSON.parse(localStorage.getItem('bingoList'));
@@ -192,11 +190,11 @@ $(()=>{
             });
             filter_option['level'] = levels;
             filter_option['clear'] = {
-                easy: $('#lamp-easy').prop('checked'),
-                hard: $('#lamp-hard').prop('checked'),
-                aaa: $('#lamp-aaa').prop('checked'),
-                failed: $('#lamp-failed').prop('checked'),
-                noplay: $('#lamp-noplay').prop('checked'),
+                easy: parseInt($('#lamp-easy').val()),
+                hard: parseInt($('#lamp-hard').val()),
+                aaa: parseInt($('#lamp-aaa').val()),
+                failed: parseInt($('#lamp-failed').val()),
+                noplay: parseInt($('#lamp-noplay').val()),
             };
 
             filter_option['recommend'] = {
@@ -204,8 +202,6 @@ $(()=>{
                 hard: $('#hard-recommend-range').val().split(';').map(item => parseInt(item)),
                 aaa: $('#aaa-recommend-range').val().split(';').map(item => parseInt(item)),
             }
-
-            console.log(filter_option);
             let songs_table_filtered = songs_table_filter(songsTable, filter_option);
             rerender_table(grid, songs_table_filtered);
             //移動
@@ -228,19 +224,60 @@ $(()=>{
         $(document).on('change', 'input[data-save]', function(){
             let key = $(this).attr('name');
             let value = $(this).prop('checked');
-            localStorage.setItem(key, value);
+            let type = $(this).attr('type');
+            if(type=='checkbox'){
+                localStorage.setItem(key, value);
+            }else{
+                localStorage.setItem(key, $(this).val());
+            }
         });
 
         //入力状態読み込み
         $('input[data-save]').each(function(){
             let id = $(this).attr('id');
-            try{
-                let state = localStorage.getItem(id) == 'true' || localStorage.getItem(id) == null;
-                $(this).prop('checked', state);
-            }catch(err){
-                console.log(err);
-                $(this).prop('checked', true);
+            let type = $(this).attr('type');
+            if(type=='checkbox'){
+                try{
+                    let state = localStorage.getItem(id) == 'true' || localStorage.getItem(id) == null;
+                    $(this).prop('checked', state);
+                }catch(err){
+                    console.log(err);
+                    $(this).prop('checked', true);
+                }
+            }else if(type=='value'){
+                try{
+                    let state = localStorage.getItem(id);
+                    if(state){
+                        state = parseInt(state);
+                        $(this).val(state);
+                        $(this).attr('data-value', state);
+                    }else{
+                        $(this).val(1);
+                        $(this).attr('data-value', 1);
+                    }
+                }catch(err){
+                    $(this).val(1);
+                    $(this).attr('data-value', 1);
+                    console.log(err);
+                }
             }
+        });
+
+        //フィルター要素クリック時
+        $('input[id^="lamp-"]').on('click', function(){
+            let id = $(this).attr('id');
+            let input = $('#' + id);
+            let min = parseInt(input.attr('min'));
+            let max = parseInt(input.attr('max'));
+            let value = parseInt(input.val());
+            if(value == max){
+                input.val(min);
+                input.attr('data-value', min);
+            }else{
+                input.val(value + 1);
+                input.attr('data-value',  value + 1);
+            }
+            input.trigger('change');
         });
 
         //スライダー
@@ -300,7 +337,6 @@ $(()=>{
             let array = [];
             $('.l-bingo').find('[data-id]').each((idx, elm)=>{
                 let id = $(elm).attr('data-id');
-                console.log(idx);
                 array[idx] = {};
                 array[idx][id] = {};
                 array[idx][id] = JSON.parse(decodeURIComponent($(elm).attr('data-json')));
@@ -323,7 +359,6 @@ $(()=>{
             }
             localStorage.setItem('bingoList', JSON.stringify(new_array));
             bingo_update(new_array);
-            console.log(new_array);
         }catch{
 
         }
@@ -334,16 +369,12 @@ $(()=>{
     $('.l-bingo__btn--backup').on('click', function(){
         try{
             let array = JSON.parse(localStorage.getItem('bingoList'));
-
-            console.log(array.length);
             const blob = new Blob([JSON.stringify(array, null, '    ')], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             const name = 'bingo.json';
             link.setAttribute('href', url);
             link.setAttribute('download', name);
-            
-            console.log(blob);
             link.click();
         }catch(err){
             console.log(err);
@@ -371,7 +402,7 @@ $(()=>{
 
     //bingoのテーブル出力
     $('.l-bingo__btn--table').on('click', function(){
-        if($('.l-bingo__wrapper').length == 25){
+        if($('.l-bingo__wrapper').has('div').length == 25){
             let date = new Date;
             const date_offset = date.getTimezoneOffset()
             date = new Date(date.getTime() - (date_offset*60*1000));
@@ -383,7 +414,6 @@ $(()=>{
             }
             let array = [];
             array = JSON.parse(localStorage.getItem('bingoList'));
-            console.log(array);
 
             let table = {
                 "name": folder_name,
@@ -400,7 +430,6 @@ $(()=>{
 
             for(let i=0; i<allIdx.length; i++){
                 let song = array[i][Object.keys(array[i])[0]];
-                console.log(song["clear"]);
                 switch(song["clear"]){
                     case 'Easy':
                         easyIdx = easyIdx.concat(i);
@@ -433,19 +462,16 @@ $(()=>{
             table = tableAddFolder('5th COLUMN',[4, 9, 14, 19, 24], array, table);
             table = tableAddFolder('DIAGONAL',[0, 6, 12, 18, 24], array, table);
             table = tableAddFolder('ANTI DIAGONAL',[4, 8, 12, 16, 20], array, table);
-            console.log(table);
 
-            console.log(JSON.stringify(table));
             const blob = new Blob([JSON.stringify(table)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            console.log(url);
             const name = `${folder_name}.json`;
             link.setAttribute('href', url);
             link.setAttribute('download', name);
-            
-            console.log(blob);
             link.click();
+        }else{
+            alert('ビンゴの空欄を埋めてください。');
         }
     });
 
@@ -454,5 +480,14 @@ $(()=>{
     $('.js-copy').on('click', function(){
         let content = $(this).html();
         clipboard_copy(content);
+    });
+
+    //localStorage削除
+    $('#clear-cache').on('click', function(){
+        let cf = confirm('キャッシュをクリアしますか？');
+        if(cf){
+            localStorage.clear();
+            location.href='';
+        }
     });
 });

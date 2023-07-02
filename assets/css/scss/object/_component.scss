@@ -141,3 +141,41 @@
         width: 100%;
     }
 }
+
+.c-note{
+    position: relative;
+    padding: 20px 40px;
+    --color: 128, 128, 128;
+    background-color: rgba(var(--color), 0.2);
+    border-radius: 5px;
+    width: fit-content;
+    overflow: hidden;
+    margin: auto;
+    color: #555;
+    &::before{
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 5px;
+        height: 100%;
+        background-color: rgba(var(--color), 1);
+    }
+    dl{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        text-align: left;
+        dt{
+            color: rgba(var(--color), 1);
+            font-size: 18px;
+        }
+        dd{
+            flex-grow: 1;
+        }
+        ul{
+            list-style: disc;
+            padding-left: 20px;
+        }
+    }
+}

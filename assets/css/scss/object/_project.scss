@@ -118,35 +118,9 @@
             display: none;
             &:checked{
                 &~span{
+                    background-color: #44aaaa;
                     color: white;
-                    background-color: #66cccc;
                     opacity: 1;
-                }
-                &[id="lamp-easy"]{
-                    &~span{
-                        background-color: var(--easy-color);
-                    }
-                }
-                &[id="lamp-hard"]{
-                    &~span{
-                        background-color: var(--hard-color);
-                    }
-                }
-                &[id="lamp-aaa"]{
-                    &~span{
-                        background-color: var(--aaa-color);
-                    }
-                }
-                &[id="lamp-failed"]{
-                    &~span{
-                        background-color: var(--failed-color);
-                    }
-                }
-                &[id="lamp-noplay"]{
-                    &~span{
-                        background-color: #f0f0f0;
-                        color: black;
-                    }
                 }
             }
         }
@@ -176,7 +150,46 @@
                 width: 65px;
             }
         }
-        input[type='checkbox']{
+        input[type='value']{
+            display: none;
+            &[data-value="0"]{
+                &~span{
+                    text-decoration: line-through;
+                    color: #884444;
+                }
+            }
+            &[data-value="2"]{
+                &~span{
+                    opacity: 1;
+                    color: white;
+                }
+                &[id="lamp-easy"]{
+                    &~span{
+                        background-color: var(--easy-color);
+                    }
+                }
+                &[id="lamp-hard"]{
+                    &~span{
+                        background-color: var(--hard-color);
+                    }
+                }
+                &[id="lamp-aaa"]{
+                    &~span{
+                        background-color: var(--aaa-color);
+                    }
+                }
+                &[id="lamp-failed"]{
+                    &~span{
+                        background-color: var(--failed-color);
+                    }
+                }
+                &[id="lamp-noplay"]{
+                    &~span{
+                        background-color: #f0f0f0;
+                        color: black;
+                    }
+                }
+            }
         }
     }
     &--level{

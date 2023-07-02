@@ -231,7 +231,6 @@ let gridOption = {
                 });
                 const easy_level = row.cells[5].data;
                 const easy_disc = row.cells[8].data;
-                //console.log(calc_dist(20, 20));
                 setTimeout(() => {
                     // render the chart based on cell data
                     let graph = new Chartist.Line(ref.current, {
