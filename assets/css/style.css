@@ -115,6 +115,7 @@ html {
   --hard-color: #CC8888;
   --aaa-color: #8888CC;
   --failed-color: #d0d0d0;
+  min-width: 1200px;
 }
 @media screen and (min-width: 768px) {
   html {
@@ -441,6 +442,8 @@ section {
 #grid-table {
   margin-bottom: 10px;
   user-select: none;
+  width: 1000px;
+  margin: auto;
 }
 #grid-table .gridjs-wrapper {
   border: none;
@@ -588,6 +591,8 @@ section {
   width: 100%;
   text-align: right;
   display: block;
+  width: 1000px;
+  margin: auto;
 }
 
 #bingo {

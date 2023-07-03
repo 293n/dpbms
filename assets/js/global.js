@@ -31,7 +31,7 @@ let gridOption = {
         },
         {
             name: 'Level',
-            width: 150,
+            width: 140,
             attributes: (cell, row) => {
                 if (row) { 
                     let md5 = row.cells[4].data;

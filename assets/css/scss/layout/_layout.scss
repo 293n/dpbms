@@ -260,6 +260,8 @@
 #grid-table{
     margin-bottom: 10px;
     user-select: none;
+    width: 1000px;
+    margin: auto;
     .gridjs-wrapper{
         border: none;
         box-shadow: none;
@@ -432,6 +434,8 @@
     width: 100%;
     text-align: right;
     display: block;
+    width: 1000px;
+    margin: auto;
 }
 
 #bingo{

@@ -127,7 +127,7 @@ html{
     --hard-color: #CC8888;
     --aaa-color: #8888CC;
     --failed-color: #d0d0d0;
-
+    min-width: 1200px;
     @include m.mq(pc){
         scroll-padding-top: f.px(250);
     }
